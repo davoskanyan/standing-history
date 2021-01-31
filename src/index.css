@@ -1,13 +1,46 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+text{
+    font-size: 16px;
+    font-family: Open Sans, sans-serif;
+}
+text.title{
+    font-size: 24px;
+    font-weight: 500;
+}
+text.subTitle{
+    font-weight: 500;
+    fill: #777777;
+}
+text.caption{
+    font-weight: 400;
+    font-size: 14px;
+    fill: #777777;
+}
+text.label{
+    font-weight: 600;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+text.valueLabel{
+    font-weight: 300;
+}
+
+text.yearText{
+    font-size: 64px;
+    font-weight: 700;
+    opacity: 0.25;
+}
+.tick text {
+    fill: #777777;
+}
+.xAxis .tick:nth-child(2) text {
+    text-anchor: start;
+}
+.tick line {
+    shape-rendering: CrispEdges;
+    stroke: #dddddd;
+}
+.tick line.origin{
+    stroke: #aaaaaa;
+}
+path.domain{
+    display: none;
 }
