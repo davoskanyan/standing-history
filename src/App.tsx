@@ -24,8 +24,8 @@ const games = dataset.map(gameData => {
   } as GameJSON
 });
 
-const dateStandings = new StandingHistory(games, dates);
 const resultsHistory = new ResultsHistory(games, dates);
+const dateStandings = new StandingHistory(games, dates, resultsHistory);
 
 function App() {
   const [date, setDate] = useState(dates[0]);
