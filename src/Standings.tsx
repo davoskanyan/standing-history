@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
 import React, { useState } from 'react';
-import { css } from 'styled-components';
 import { StandingRow } from "./data/models";
 import { getComparator, stableSort } from './util';
 
@@ -101,7 +100,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
         </TableHead>
         <TableBody>
           {stableSort(rows, getComparator(orderDirection, orderBy)).map((row) => (
-            <TableRow key={row.name} title="Highlight" className={css(`cursor: pointer`)}>
+            <TableRow key={row.name} title="Highlight">
               <TableCell component="th" scope="row">{row.index}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell align="right">{row.win + row.draw + row.loss}</TableCell>

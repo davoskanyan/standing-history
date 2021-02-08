@@ -50,12 +50,12 @@ function App() {
   return (
     <div>
       <Results matchweekGames={resultsHistory.getAllResults()} />
-      {/*<DateSelect*/}
-      {/*  value={date}*/}
-      {/*  onChange={setDate}*/}
-      {/*  options={dates}*/}
-      {/*/>*/}
-      {/*<Standings rows={rows} />*/}
+      <DateSelect
+        value={date}
+        onChange={setDate}
+        options={dates}
+      />
+      <Standings rows={rows} />
     </div>
   );
 }

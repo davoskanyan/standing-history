@@ -7,8 +7,6 @@ export class ResultsHistory {
   constructor(games: Array<GameJSON>, dates: Array<string>) {
     this.initDates(dates);
     this.initResults(games);
-
-    console.log('dv:', this.results);
   }
 
   public getAllResults() {
@@ -30,10 +28,6 @@ export class ResultsHistory {
       const isInLastDay = this.dates.includes(game.date);
       const isNextInSameDay = nextGame && nextGame.date === game.date;
       const isLastOfMatchday = isInLastDay && !isNextInSameDay;
-
-      if (game.date === '05/05/2019') {
-        console.log('dv:', game);
-      }
 
       if (isLastOfMatchday) {
         this.results.set(game.date, roundResults);
