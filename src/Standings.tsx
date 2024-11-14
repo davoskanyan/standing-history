@@ -1,14 +1,28 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
-import React, { useState } from 'react';
-import { StandingRow } from "./data/models";
-import { getComparator, stableSort } from './util';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableCellProps,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel
+} from '@mui/material';
+import React, {ReactNode, useMemo, useState} from 'react';
+import {StandingRow} from "./data/models";
+import {getComparator, stableSort} from './util';
+import {useCurrentFrame} from "remotion";
+import {framesForEachDate} from "./remotion/utils";
 
 interface StandingsProps {
   rows: Array<StandingRow>;
+  nextRows?: Array<StandingRow>;
 }
 
+const highlightedTeam = "Alaves"
+
 const Standings: React.FC<StandingsProps> = (props) => {
-  const { rows } = props;
+  const {rows, nextRows} = props;
 
   const [orderBy, setOrderBy] = useState('index');
   const [orderDirection, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -19,8 +33,32 @@ const Standings: React.FC<StandingsProps> = (props) => {
     setOrderBy(property);
   };
 
+  const currentRowsSorted = useMemo(
+    () => stableSort(rows, getComparator(orderDirection, orderBy)),
+    [orderBy, orderDirection, rows]
+  )
+  const nextRowsSorted = useMemo(
+    () => nextRows && stableSort(nextRows, getComparator(orderDirection, orderBy)),
+    [nextRows, orderBy, orderDirection]
+  )
+
+  const nextRowsSortedMapByName = useMemo(() => {
+    return nextRowsSorted ? nextRowsSorted.reduce<Record<string, StandingRow>>((acc, row) => {
+      acc[row.name] = row
+      return acc
+    }, {}) : {}
+  }, [nextRowsSorted])
+
+  console.log('dv:', currentRowsSorted, nextRowsSorted)
+
+  const tableContainerStyle = {
+    backgroundColor: `rgba(255, 255, 255, 0.1)`,
+    backdropFilter: `blur(4px)`,
+    width: '50%'
+  }
+
   return (
-    <TableContainer>
+    <TableContainer style={tableContainerStyle}>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -99,22 +137,104 @@ const Standings: React.FC<StandingsProps> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {stableSort(rows, getComparator(orderDirection, orderBy)).map((row) => (
-            <TableRow key={row.name} title="Highlight">
-              <TableCell component="th" scope="row">{row.index}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell align="right">{row.win + row.draw + row.loss}</TableCell>
-              <TableCell align="right">{row.win}</TableCell>
-              <TableCell align="right">{row.draw}</TableCell>
-              <TableCell align="right">{row.loss}</TableCell>
-              <TableCell align="right">{`${row.scored}:${row.received}`}</TableCell>
-              <TableCell align="right">{row.points}</TableCell>
-            </TableRow>
-          ))}
+          {currentRowsSorted.map((row) => {
+            const nextRow: StandingRow | undefined = nextRowsSortedMapByName[row.name]
+            const diff = nextRow ? nextRow.index - row.index : 0
+            const highlight = row.name === highlightedTeam
+
+            return (
+              <TableRow key={row.name} title="Highlight">
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  component="th"
+                  scope="row"
+                  currentValue={row.index}
+                  nextValue={nextRow?.index}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  currentValue={row.name}
+                  nextValue={nextRow?.name}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={row.win + row.draw + row.loss}
+                  nextValue={nextRow && nextRow.win + nextRow.draw + nextRow.loss}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={row.win}
+                  nextValue={nextRow?.win}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={row.draw}
+                  nextValue={nextRow?.draw}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={row.loss}
+                  nextValue={nextRow?.loss}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={`${row.scored}:${row.received}`}
+                  nextValue={nextRow && `${nextRow.scored}:${nextRow.received}`}
+                />
+                <AnimatingTableCell
+                  highlight={highlight}
+                  diff={diff}
+                  align="right"
+                  currentValue={row.points}
+                  nextValue={nextRow?.points}
+                />
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
   );
+}
+
+function AnimatingTableCell(props: TableCellProps & {
+  diff?: number,
+  highlight: boolean,
+  currentValue: ReactNode,
+  nextValue?: ReactNode
+}) {
+  const {diff, highlight, currentValue, nextValue} = props;
+  const percent = useCurrentFrame() % framesForEachDate / framesForEachDate
+  const delayedPercent = Math.min(percent * 3, 1)
+  const transitionFinished = delayedPercent === 1;
+
+  const transform = `translateY(${diff * delayedPercent * 100}%)`
+  const value = transitionFinished && nextValue !== undefined ? nextValue : currentValue;
+
+  const highlightedStyle = {
+    background: '#90caf940',
+    color: 'white',
+    zIndex: 1,
+    position: 'relative',
+  }
+
+  return <TableCell style={{
+    transform,
+    paddingBlock: '4px',
+    ...highlight ? highlightedStyle : undefined,
+  }} {...props}>{value}</TableCell>
 }
 
 export default Standings;

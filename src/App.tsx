@@ -1,17 +1,13 @@
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import ArrowLeft from '@material-ui/icons/ArrowLeft';
-import ArrowRight from '@material-ui/icons/ArrowRight';
 import React, { useMemo, useState } from 'react';
 import { GameJSON } from "./data/models";
 import { ResultsHistory } from "./data/ResultsHistory";
 import { StandingHistory } from "./data/StandingHistory";
 import dataset from './laliga-1819.json';
 import dates from './laliga-1819-dates.json';
-import Results from "./Results";
 import Standings from './Standings';
 import { descendingComparator, goalDifferenceComparator, stableSort } from './util';
+import {IconButton, MenuItem, Select} from "@mui/material";
+import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 
 const games = dataset.map(gameData => {
   return {
@@ -49,7 +45,7 @@ function App() {
 
   return (
     <div>
-      <Results matchweekGames={resultsHistory.getAllResults()} />
+      {/*<Results matchweekGames={resultsHistory.getAllResults()} />*/}
       <DateSelect
         value={date}
         onChange={setDate}

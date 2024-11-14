@@ -1,5 +1,5 @@
 import { css } from "@emotion/css";
-import { Divider, List, ListItem, Typography } from "@material-ui/core";
+import { Divider, List, ListItem, Typography } from "@mui/material";
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 import React from 'react';

@@ -1,9 +1,12 @@
-import { injectGlobal } from "@emotion/css";
-import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import {injectGlobal} from "@emotion/css";
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
 import font from './Lato-Regular.ttf';
+import {Player} from '@remotion/player';
+import {MyComposition} from './remotion/Composition'
+
+import {createRoot} from 'react-dom/client';
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 injectGlobal`
   * {
@@ -50,24 +53,26 @@ const lato = {
   `
 };
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontSize: 18,
     fontFamily: 'Lato, sans-serif, Arial',
   },
-  overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        '@font-face': [lato],
-      },
-    },
+  palette: {
+    mode: 'dark',
   },
 });
 
-ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <App />
-  </ThemeProvider>,
-  document.getElementById('root')
-);
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<ThemeProvider theme={theme}>
+  <CssBaseline />
+  <Player
+    component={MyComposition}
+    durationInFrames={120}
+    compositionWidth={1280}
+    compositionHeight={720}
+    fps={30}
+    controls
+  />
+</ThemeProvider>);
