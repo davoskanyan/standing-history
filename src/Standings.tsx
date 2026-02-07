@@ -54,11 +54,13 @@ const Standings: React.FC<StandingsProps> = (props) => {
       : {};
   }, [nextRowsSorted]);
 
+  const hideOnSmall = { display: { xs: "none", sm: "table-cell" } };
+
   return (
     <TableContainer
       sx={{
         width: "100%",
-        minWidth: 660,
+        minWidth: { xs: 0, sm: 660 },
         maxWidth: 720,
         maxHeight: { xs: "70vh", md: "none" },
         overflow: "auto",
@@ -80,11 +82,11 @@ const Standings: React.FC<StandingsProps> = (props) => {
               "& th": {
                 bgcolor: "rgba(255,255,255,0.04)",
                 fontWeight: 600,
-                fontSize: "0.75rem",
+                fontSize: { xs: "0.65rem", sm: "0.75rem" },
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
                 color: "text.secondary",
-                py: 1.5,
+                py: { xs: 0.75, sm: 1.5 },
                 borderBottom: `1px solid ${theme.palette.divider}`,
               },
             }}
@@ -162,6 +164,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
             <TableCell
               sortDirection={orderBy === "gd" ? orderDirection : false}
               align="right"
+              sx={hideOnSmall}
             >
               <TableSortLabel
                 active={orderBy === "gd"}
@@ -260,6 +263,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                   align="right"
                   currentValue={`${row.scored}:${row.received}`}
                   nextValue={nextRow && `${nextRow.scored}:${nextRow.received}`}
+                  sx={hideOnSmall}
                 />
                 <AnimatingTableCell
                   highlight={highlight}
@@ -276,6 +280,11 @@ const Standings: React.FC<StandingsProps> = (props) => {
       </Table>
     </TableContainer>
   );
+};
+
+const cellSx = {
+  py: { xs: 0.75, sm: 1.25 },
+  fontSize: { xs: "0.75rem", sm: "0.9rem" },
 };
 
 function AnimatingTableCell(
@@ -295,6 +304,8 @@ function AnimatingTableCell(
     currentValue,
     nextValue,
     style,
+    sx,
+    ...rest
   } = props;
   const transitionFinished = delayedPercent === 1;
 
@@ -305,15 +316,13 @@ function AnimatingTableCell(
   const cellStyle: CSSProperties = {
     backgroundColor: highlight ? "rgba(255,255,255,0.06)" : "transparent",
     transform,
-    paddingBlock: 10,
     position: "relative",
     zIndex: highlight ? 1 : 0,
-    fontSize: "0.9rem",
     ...style,
   };
 
   return (
-    <TableCell style={cellStyle} {...props}>
+    <TableCell style={cellStyle} sx={{ ...cellSx, ...sx }} {...rest}>
       {value}
     </TableCell>
   );
