@@ -1,14 +1,13 @@
-import {injectGlobal} from "@emotion/css";
-import React from 'react';
-import font from './Lato-Regular.ttf';
-import {Player} from '@remotion/player';
-import {MyComposition} from './remotion/Composition'
+import { injectGlobal } from "@emotion/css";
+import React from "react";
+import { Player } from "@remotion/player";
+import { MyComposition } from "./remotion/Composition";
 
-import {createRoot} from 'react-dom/client';
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createRoot } from "react-dom/client";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-injectGlobal`
+void injectGlobal`
   * {
     margin: 0;
     padding: 0;
@@ -41,38 +40,28 @@ injectGlobal`
 //   }
 // `
 
-const lato = {
-  fontFamily: 'Lato',
-  fontStyle: 'normal',
-  fontWeight: 400,
-  src: `
-    font-family: "Lato";
-    src: url(${font}) format("truetype")
-    font-weight: normal;
-    font-style: normal;
-  `
-};
-
 const theme = createTheme({
   typography: {
     fontSize: 18,
-    fontFamily: 'Lato, sans-serif, Arial',
+    fontFamily: "Lato, sans-serif, Arial",
   },
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<ThemeProvider theme={theme}>
-  <CssBaseline />
-  <Player
-    component={MyComposition}
-    durationInFrames={120}
-    compositionWidth={1280}
-    compositionHeight={720}
-    fps={30}
-    controls
-  />
-</ThemeProvider>);
+root.render(
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Player
+      component={MyComposition}
+      durationInFrames={120}
+      compositionWidth={1280}
+      compositionHeight={720}
+      fps={30}
+      controls
+    />
+  </ThemeProvider>
+);

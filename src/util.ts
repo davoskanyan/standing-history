@@ -1,5 +1,8 @@
 export function stableSort<T>(array: Array<T>, comparator): Array<T> {
-  const stabilizedArray: Array<[T, number]> = array.map((el, index) => [el, index]);
+  const stabilizedArray: Array<[T, number]> = array.map((el, index) => [
+    el,
+    index,
+  ]);
   stabilizedArray.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
@@ -25,7 +28,10 @@ export function goalDifferenceComparator(a, b) {
   if (bDifference === aDifference && b.scored === a.scored) {
     return 0;
   }
-  if (bDifference < aDifference || (bDifference === aDifference && b.scored < a.scored)) {
+  if (
+    bDifference < aDifference ||
+    (bDifference === aDifference && b.scored < a.scored)
+  ) {
     return -1;
   }
   return 1;
@@ -47,11 +53,11 @@ export function matchesPlayedComparator(a, b) {
 export function getComparator(order, orderBy) {
   const comparators = {
     gd: goalDifferenceComparator,
-    mp: matchesPlayedComparator
-  }
+    mp: matchesPlayedComparator,
+  };
   const comparator = comparators[orderBy] || descendingComparator;
 
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => comparator(a, b, orderBy)
     : (a, b) => -comparator(a, b, orderBy);
 }

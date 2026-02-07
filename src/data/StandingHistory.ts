@@ -6,7 +6,11 @@ export class StandingHistory {
   private resultsHistory: ResultsHistory;
   private teamNames: Array<string>;
 
-  constructor(games: Array<GameJSON>, dates: Array<string>, resultsHistory: ResultsHistory) {
+  constructor(
+    games: Array<GameJSON>,
+    dates: Array<string>,
+    resultsHistory: ResultsHistory
+  ) {
     this.initTeamNames(games);
     this.initResultsHistory(resultsHistory);
     this.initStandingHistory();
@@ -32,42 +36,57 @@ export class StandingHistory {
   private initStandingHistory() {
     this.standingHistory = new Map();
 
-    let standings: MatchweekStandings = this.teamNames.reduce((acc, teamName) => {
-      acc[teamName] = { name: teamName, win: 0, loss: 0, draw: 0, scored: 0, received: 0, points: 0 };
-      return acc;
-    }, {});
+    let standings: MatchweekStandings = this.teamNames.reduce(
+      (acc, teamName) => {
+        acc[teamName] = {
+          name: teamName,
+          win: 0,
+          loss: 0,
+          draw: 0,
+          scored: 0,
+          received: 0,
+          points: 0,
+        };
+        return acc;
+      },
+      {}
+    );
 
     const allResults = this.resultsHistory.getAllResults();
-    for (let [date, results] of allResults) {
-      results.forEach(game => {
+    for (const [date, results] of allResults) {
+      results.forEach((game) => {
         const homeTeamData = standings[game.homeTeam];
         const awayTeamData = standings[game.awayTeam];
 
         const homeTeamNewData: StandingRow = {
           name: homeTeamData.name,
-          win: homeTeamData.win + +(game.result === 'H'),
-          loss: homeTeamData.loss + +(game.result === 'A'),
-          draw: homeTeamData.draw + +(game.result === 'D'),
+          win: homeTeamData.win + +(game.result === "H"),
+          loss: homeTeamData.loss + +(game.result === "A"),
+          draw: homeTeamData.draw + +(game.result === "D"),
           scored: homeTeamData.scored + game.homeTeamGoals,
           received: homeTeamData.received + game.awayTeamGoals,
-          points: homeTeamData.points + (game.result === 'H' ? 3 : game.result === 'D' ? 1 : 0)
+          points:
+            homeTeamData.points +
+            (game.result === "H" ? 3 : game.result === "D" ? 1 : 0),
         };
 
         const awayTeamNewData: StandingRow = {
           name: awayTeamData.name,
-          win: awayTeamData.win + +(game.result === 'A'),
-          loss: awayTeamData.loss + +(game.result === 'H'),
-          draw: awayTeamData.draw + +(game.result === 'D'),
+          win: awayTeamData.win + +(game.result === "A"),
+          loss: awayTeamData.loss + +(game.result === "H"),
+          draw: awayTeamData.draw + +(game.result === "D"),
           scored: awayTeamData.scored + game.awayTeamGoals,
           received: awayTeamData.received + game.homeTeamGoals,
-          points: awayTeamData.points + (game.result === 'A' ? 3 : game.result === 'D' ? 1 : 0)
+          points:
+            awayTeamData.points +
+            (game.result === "A" ? 3 : game.result === "D" ? 1 : 0),
         };
 
         standings = {
           ...standings,
           [game.homeTeam]: homeTeamNewData,
-          [game.awayTeam]: awayTeamNewData
-        }
+          [game.awayTeam]: awayTeamNewData,
+        };
       });
 
       this.standingHistory.set(date, standings);

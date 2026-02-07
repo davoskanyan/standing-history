@@ -1,23 +1,27 @@
-import React, { useMemo, useState } from 'react';
-import { GameJSON } from "./data/models";
+import React, { useMemo, useState } from "react";
+import { GameJSON, StandingRow } from "./data/models";
 import { ResultsHistory } from "./data/ResultsHistory";
 import { StandingHistory } from "./data/StandingHistory";
-import dataset from './laliga-1819.json';
-import dates from './laliga-1819-dates.json';
-import Standings from './Standings';
-import { descendingComparator, goalDifferenceComparator, stableSort } from './util';
-import {IconButton, MenuItem, Select} from "@mui/material";
-import { ArrowLeft, ArrowRight } from '@mui/icons-material';
+import dataset from "./laliga-1819.json";
+import dates from "./laliga-1819-dates.json";
+import Standings from "./Standings";
+import {
+  descendingComparator,
+  goalDifferenceComparator,
+  stableSort,
+} from "./util";
+import { IconButton, MenuItem, Select } from "@mui/material";
+import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 
-const games = dataset.map(gameData => {
+const games = dataset.map((gameData) => {
   return {
     homeTeam: gameData.HomeTeam,
     awayTeam: gameData.AwayTeam,
     date: gameData.Date,
     homeTeamGoals: gameData.FTHG,
     awayTeamGoals: gameData.FTAG,
-    result: gameData.FTR
-  } as GameJSON
+    result: gameData.FTR,
+  } as GameJSON;
 });
 
 const resultsHistory = new ResultsHistory(games, dates);
@@ -29,7 +33,7 @@ function App() {
     const standingsMap = dateStandings.getStandingsAt(date);
     const values = Object.values(standingsMap);
     return stableSort(values, (row1, row2) => {
-      const pointsComparison = descendingComparator(row1, row2, 'points');
+      const pointsComparison = descendingComparator(row1, row2, "points");
       if (pointsComparison !== 0) {
         return pointsComparison;
       }
@@ -40,17 +44,13 @@ function App() {
       }
 
       return 0;
-    }).map((item: any, index) => ({ ...item, index: index + 1 }));
+    }).map((item: StandingRow, index) => ({ ...item, index: index + 1 }));
   }, [date]);
 
   return (
     <div>
       {/*<Results matchweekGames={resultsHistory.getAllResults()} />*/}
-      <DateSelect
-        value={date}
-        onChange={setDate}
-        options={dates}
-      />
+      <DateSelect value={date} onChange={setDate} options={dates} />
       <Standings rows={rows} />
     </div>
   );
@@ -58,16 +58,16 @@ function App() {
 
 function DateSelect({ value, onChange, options }) {
   const leftArrowHandler = () => {
-    const currentIndex = options.findIndex(el => el === value);
+    const currentIndex = options.findIndex((el) => el === value);
     const newValue = options[currentIndex - 1];
     onChange(newValue);
-  }
+  };
 
   const rightArrowHandler = () => {
-    const currentIndex = options.findIndex(el => el === value);
+    const currentIndex = options.findIndex((el) => el === value);
     const newValue = options[currentIndex + 1];
     onChange(newValue);
-  }
+  };
 
   const isFirstDate = options.indexOf(value) === 0;
   const isLastDate = options.indexOf(value) === options.length - 1;
@@ -87,10 +87,12 @@ function DateSelect({ value, onChange, options }) {
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       >
         {options.map((option, index) => (
-          <MenuItem value={option} key={option}>Matchweek {index + 1}</MenuItem>
+          <MenuItem value={option} key={option}>
+            Matchweek {index + 1}
+          </MenuItem>
         ))}
       </Select>
       <IconButton

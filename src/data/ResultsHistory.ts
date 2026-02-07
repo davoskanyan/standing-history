@@ -1,7 +1,7 @@
 import { GameJSON } from "./models";
 
 export class ResultsHistory {
-  private results: Map<string, Array<GameJSON>>
+  private results: Map<string, Array<GameJSON>>;
   private dates: Array<string>;
 
   constructor(games: Array<GameJSON>, dates: Array<string>) {

@@ -1,13 +1,9 @@
-import {
-  Loop,
-  OffthreadVideo,
-  useVideoConfig,
-} from "remotion";
+import { Loop, OffthreadVideo, useVideoConfig } from "remotion";
 
 export const LoopedOffthreadVideo: React.FC<{
   durationInSeconds: number | null;
   src: string;
-}> = ({durationInSeconds, src}) => {
+}> = ({ durationInSeconds, src }) => {
   const { fps } = useVideoConfig();
 
   if (durationInSeconds === null) {

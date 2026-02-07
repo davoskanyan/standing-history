@@ -4,7 +4,7 @@ export interface GameJSON {
   date: string;
   homeTeamGoals: number;
   awayTeamGoals: number;
-  result: 'H' | 'A' | 'D';
+  result: "H" | "A" | "D";
 }
 
 export type MatchweekStandings = Record<string, StandingRow>;
