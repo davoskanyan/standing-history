@@ -92,7 +92,7 @@ root.render(
           La Liga 2018/19
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Standings & results by matchweek
+          Standings and results by matchweek
         </Typography>
       </Box>
       <Box>
@@ -113,7 +113,7 @@ root.render(
           color="text.secondary"
           sx={{ mb: 1.5, textTransform: "uppercase", letterSpacing: "0.08em" }}
         >
-          Season recap
+          Season recap video
         </Typography>
         <Player
           component={MyComposition}

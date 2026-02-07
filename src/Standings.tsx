@@ -121,6 +121,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "mp"}
                 direction={orderBy === "mp" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "mp")}
+                title="Matches played"
               >
                 MP
               </TableSortLabel>
@@ -133,6 +134,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "win"}
                 direction={orderBy === "win" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "win")}
+                title="Wins"
               >
                 W
               </TableSortLabel>
@@ -145,6 +147,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "draw"}
                 direction={orderBy === "draw" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "draw")}
+                title="Draws"
               >
                 D
               </TableSortLabel>
@@ -157,6 +160,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "loss"}
                 direction={orderBy === "loss" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "loss")}
+                title="Losses"
               >
                 L
               </TableSortLabel>
@@ -170,6 +174,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "gd"}
                 direction={orderBy === "gd" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "gd")}
+                title="Goals for : against"
               >
                 G
               </TableSortLabel>
@@ -182,6 +187,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 active={orderBy === "points"}
                 direction={orderBy === "points" ? orderDirection : "asc"}
                 onClick={(event) => handleRequestSort(event, "points")}
+                title="Points"
               >
                 PTS
               </TableSortLabel>

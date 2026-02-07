@@ -95,7 +95,7 @@ export const MyComposition = () => {
             marginBottom: 2,
           }}
         >
-          LaLiga 2018–19
+          La Liga 2018–19
         </Typography>
         <Typography
           sx={{
