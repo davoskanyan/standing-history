@@ -1,6 +1,6 @@
 export const datesCount = 38;
 
-export const framesForEachDate = 60;
+export const framesForEachDate = 40;
 
 export const getFramesCount = (datesCount: number) =>
   datesCount * framesForEachDate;

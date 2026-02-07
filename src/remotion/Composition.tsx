@@ -1,9 +1,4 @@
-import {
-  AbsoluteFill,
-  useCurrentFrame,
-  staticFile,
-  useVideoConfig,
-} from "remotion";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { useCallback, useMemo } from "react";
 import { GameJSON, StandingRow } from "../data/models";
 import { ResultsHistory } from "../data/ResultsHistory";
@@ -19,11 +14,8 @@ import {
 import { getDateIndexOfFrame } from "./utils";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { LoopedOffthreadVideo } from "./LoopedOffthreadVideo";
 import { Typography } from "@mui/material";
-
-const bgBlackVideo = staticFile(`/background-videos/black-earth.mp4`);
-console.log("dv:", bgBlackVideo);
+import { datesCount } from "./utils";
 
 const games = dataset.map((gameData) => {
   return {
@@ -79,29 +71,44 @@ export const MyComposition = () => {
     [getRows, nextDate]
   );
 
-  return (
-    <>
-      <AbsoluteFill>
-        <LoopedOffthreadVideo durationInSeconds={30} src={bgBlackVideo} />
-      </AbsoluteFill>
-      <AbsoluteFill style={{ padding: 10 }}>
-        {/*<span>{currentFrame}</span>*/}
-        {/*<span>{currentDate}</span>*/}
+  const matchday = dateIndex + 1;
 
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
-          <Typography
-            variant="h1"
-            fontSize="32px"
-            fontWeight="600"
-            marginBottom="8px"
-            color="secondary"
-          >
-            LaLiga 2018-19
-          </Typography>
-          <Standings frame={frame} rows={rows} nextRows={nextRows} />
-        </ThemeProvider>
-      </AbsoluteFill>
-    </>
+  return (
+    <AbsoluteFill
+      style={{
+        background: "#0a0a0a",
+        padding: 48,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: 28,
+            fontWeight: 500,
+            letterSpacing: "0.02em",
+            color: "rgba(255,255,255,0.9)",
+            marginBottom: 2,
+          }}
+        >
+          LaLiga 2018–19
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: 14,
+            color: "rgba(255,255,255,0.45)",
+            marginBottom: 3,
+            letterSpacing: "0.04em",
+          }}
+        >
+          Matchday {matchday} / {datesCount}
+        </Typography>
+        <Standings frame={frame} rows={rows} nextRows={nextRows} />
+      </ThemeProvider>
+    </AbsoluteFill>
   );
 };

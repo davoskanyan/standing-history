@@ -14,17 +14,29 @@ import { GameJSON } from "./data/models";
 
 interface ResultsProps {
   matchweekGames: Map<string, Array<GameJSON>>;
+  selectedDate: string;
+  dates: string[];
 }
 
 const Results: React.FC<ResultsProps> = (props) => {
-  const { matchweekGames } = props;
+  const { matchweekGames, selectedDate, dates } = props;
   const theme = useTheme();
+
+  const entries = (() => {
+    const all = [...matchweekGames.entries()];
+    const idx = all.findIndex(([d]) => d === selectedDate);
+    if (idx === -1) return [];
+    return [all[idx]];
+  })();
+
+  const matchweekLabel = (date: string) =>
+    `Matchweek ${dates.indexOf(date) + 1}`;
 
   return (
     <>
-      {[...matchweekGames.entries()].map(([, games], index) => (
+      {entries.map(([date, games]) => (
         <Paper
-          key={index}
+          key={date}
           elevation={0}
           sx={{
             mb: 2,
@@ -46,7 +58,7 @@ const Results: React.FC<ResultsProps> = (props) => {
               letterSpacing: "0.02em",
             }}
           >
-            Matchweek {index + 1}
+            {matchweekLabel(date)}
           </Typography>
           <List disablePadding>
             {games.map((game, gameIndex) => (

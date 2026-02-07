@@ -19,8 +19,6 @@ interface StandingsProps {
   nextRows?: Array<StandingRow>;
 }
 
-const highlightedTeam = "Alaves";
-
 const Standings: React.FC<StandingsProps> = (props) => {
   const { frame, rows, nextRows } = props;
   const percent = (frame % framesForEachDate) / framesForEachDate;
@@ -54,19 +52,17 @@ const Standings: React.FC<StandingsProps> = (props) => {
       : {};
   }, [nextRowsSorted]);
 
-  console.log("dv:", currentRowsSorted, nextRowsSorted);
-
   const tableContainerStyle = {
-    backgroundColor: `rgba(255, 255, 255, 0.1)`,
-    backdropFilter: `blur(4px)`,
-    width: "50%",
+    width: "100%",
+    maxWidth: 720,
+    backgroundColor: "#141414",
   };
 
   return (
     <TableContainer style={tableContainerStyle}>
       <Table size="small">
         <TableHead>
-          <TableRow>
+          <TableRow sx={{ "& th": { backgroundColor: "#1a1a1a" } }}>
             <TableCell
               sortDirection={orderBy === "index" ? orderDirection : false}
             >
@@ -168,7 +164,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
             const nextRow: StandingRow | undefined =
               nextRowsSortedMapByName[row.name];
             const diff = nextRow ? nextRow.index - row.index : 0;
-            const highlight = row.name === highlightedTeam;
+            const highlight = false;
 
             return (
               <TableRow key={row.name} title="Highlight">
@@ -269,22 +265,16 @@ function AnimatingTableCell(
   const value =
     transitionFinished && nextValue !== undefined ? nextValue : currentValue;
 
-  const highlightedStyle: CSSProperties = {
-    background: "#90caf940",
-    color: "white",
-    zIndex: 1,
+  const cellStyle: CSSProperties = {
+    backgroundColor: highlight ? "#252525" : "#141414",
+    transform,
+    paddingBlock: "4px",
     position: "relative",
+    zIndex: highlight ? 1 : 0,
   };
 
   return (
-    <TableCell
-      style={{
-        transform,
-        paddingBlock: "4px",
-        ...(highlight ? highlightedStyle : undefined),
-      }}
-      {...props}
-    >
+    <TableCell style={cellStyle} {...props}>
       {value}
     </TableCell>
   );

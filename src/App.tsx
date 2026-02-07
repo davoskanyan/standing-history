@@ -12,7 +12,7 @@ import {
   goalDifferenceComparator,
   stableSort,
 } from "./util";
-import { IconButton, MenuItem, Select } from "@mui/material";
+import { IconButton, MenuItem, Select, Typography } from "@mui/material";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 
 const games = dataset.map((gameData) => {
@@ -50,10 +50,37 @@ function App() {
   }, [date]);
 
   return (
-    <div>
-      <Results matchweekGames={resultsHistory.getAllResults()} />
-      <DateSelect value={date} onChange={setDate} options={dates} />
-      <Standings frame={framesForEachDate} rows={rows} />
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          flexWrap: "wrap",
+        }}
+      >
+        <DateSelect value={date} onChange={setDate} options={dates} />
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: 24,
+          alignItems: "start",
+        }}
+      >
+        <Standings frame={framesForEachDate} rows={rows} />
+        <div>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+            Results
+          </Typography>
+          <Results
+            matchweekGames={resultsHistory.getAllResults()}
+            selectedDate={date}
+            dates={dates}
+          />
+        </div>
+      </div>
     </div>
   );
 }
