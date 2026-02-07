@@ -72,7 +72,7 @@ function App() {
           display: "grid",
           gridTemplateColumns: {
             xs: "1fr",
-            md: "minmax(660px, 720px) minmax(320px, 1fr)",
+            lg: "2fr 1fr",
           },
           gap: 3,
           alignItems: "start",
