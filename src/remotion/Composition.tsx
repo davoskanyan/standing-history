@@ -50,8 +50,8 @@ const dateStandings = new StandingHistory(games, dates, resultsHistory);
 
 export const MyComposition = () => {
   useVideoConfig();
-  const currentFrame = useCurrentFrame();
-  const dateIndex = getDateIndexOfFrame(currentFrame);
+  const frame = useCurrentFrame();
+  const dateIndex = getDateIndexOfFrame(frame);
   const currentDate = dates[dateIndex];
   const nextDate = dates[dateIndex + 1];
 
@@ -99,7 +99,7 @@ export const MyComposition = () => {
           >
             LaLiga 2018-19
           </Typography>
-          <Standings rows={rows} nextRows={nextRows} />
+          <Standings frame={frame} rows={rows} nextRows={nextRows} />
         </ThemeProvider>
       </AbsoluteFill>
     </>

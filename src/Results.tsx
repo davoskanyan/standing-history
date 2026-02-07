@@ -1,5 +1,12 @@
 import { css } from "@emotion/css";
-import { Divider, List, ListItem, Typography } from "@mui/material";
+import {
+  Divider,
+  List,
+  ListItem,
+  Paper,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { format } from "date-fns/format";
 import { parse } from "date-fns/parse";
 import React from "react";
@@ -11,21 +18,46 @@ interface ResultsProps {
 
 const Results: React.FC<ResultsProps> = (props) => {
   const { matchweekGames } = props;
+  const theme = useTheme();
 
   return (
     <>
       {[...matchweekGames.entries()].map(([, games], index) => (
-        <div
+        <Paper
           key={index}
-          className={css(`
-          color: #242424;
-        `)}
+          elevation={0}
+          sx={{
+            mb: 2,
+            p: 2,
+            backgroundColor:
+              theme.palette.mode === "dark"
+                ? "rgba(255, 255, 255, 0.06)"
+                : "rgba(0, 0, 0, 0.03)",
+            borderRadius: 1,
+            border: `1px solid ${theme.palette.divider}`,
+          }}
         >
-          <Typography variant="h4">Matchweek {index + 1}</Typography>
-          <List>
-            {games.map((game, index) => (
-              <React.Fragment key={index}>
-                <ListItem>
+          <Typography
+            variant="h6"
+            sx={{
+              color: "text.primary",
+              fontWeight: 600,
+              mb: 1,
+              letterSpacing: "0.02em",
+            }}
+          >
+            Matchweek {index + 1}
+          </Typography>
+          <List disablePadding>
+            {games.map((game, gameIndex) => (
+              <React.Fragment key={gameIndex}>
+                <ListItem
+                  sx={{
+                    py: 0.75,
+                    px: 0,
+                    color: "text.secondary",
+                  }}
+                >
                   <GameDate date={game.date} />
                   <p
                     className={css`
@@ -42,11 +74,18 @@ const Results: React.FC<ResultsProps> = (props) => {
                     />
                   </p>
                 </ListItem>
-                <Divider />
+                <Divider
+                  sx={{
+                    borderColor:
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.08)"
+                        : "rgba(0, 0, 0, 0.08)",
+                  }}
+                />
               </React.Fragment>
             ))}
           </List>
-        </div>
+        </Paper>
       ))}
     </>
   );
@@ -84,25 +123,40 @@ const awayTeamNameStyle = css`
   margin-left: 8px;
 `;
 
-const scorePartStyle = css`
-  width: 32px;
-  line-height: 38px;
-  text-align: center;
-  background: #02346d;
-  color: white;
-  margin: 0 1px;
-`;
-
 const GameResult: React.FC<GameResultProps> = (props) => {
   const { homeTeam, awayTeam, homeScore, awayScore } = props;
   return (
     <span className={css(`display: flex; align-items: center`)}>
       <span className={homeTeamNameStyle}>{homeTeam}</span>
-      <span className={scorePartStyle}>{homeScore}</span>
-      <span className={scorePartStyle}>{awayScore}</span>
+      <ScorePill value={homeScore} />
+      <ScorePill value={awayScore} />
       <span className={awayTeamNameStyle}>{awayTeam}</span>
     </span>
   );
 };
+
+function ScorePill({ value }: { value: number }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  return (
+    <span
+      style={{
+        width: 32,
+        lineHeight: "38px",
+        textAlign: "center" as const,
+        background: isDark
+          ? theme.palette.primary.dark
+          : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        margin: "0 2px",
+        borderRadius: 4,
+        fontSize: "0.95rem",
+        fontWeight: 600,
+      }}
+    >
+      {value}
+    </span>
+  );
+}
 
 export default Results;

@@ -5,6 +5,8 @@ import { StandingHistory } from "./data/StandingHistory";
 import dataset from "./laliga-1819.json";
 import dates from "./laliga-1819-dates.json";
 import Standings from "./Standings";
+import Results from "./Results";
+import { framesForEachDate } from "./remotion/utils";
 import {
   descendingComparator,
   goalDifferenceComparator,
@@ -49,9 +51,9 @@ function App() {
 
   return (
     <div>
-      {/*<Results matchweekGames={resultsHistory.getAllResults()} />*/}
+      <Results matchweekGames={resultsHistory.getAllResults()} />
       <DateSelect value={date} onChange={setDate} options={dates} />
-      <Standings rows={rows} />
+      <Standings frame={framesForEachDate} rows={rows} />
     </div>
   );
 }

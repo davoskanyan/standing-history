@@ -11,10 +11,10 @@ import {
 import React, { CSSProperties, ReactNode, useMemo, useState } from "react";
 import { StandingRow } from "./data/models";
 import { getComparator, stableSort } from "./util";
-import { useCurrentFrame } from "remotion";
 import { framesForEachDate } from "./remotion/utils";
 
 interface StandingsProps {
+  frame: number;
   rows: Array<StandingRow>;
   nextRows?: Array<StandingRow>;
 }
@@ -22,7 +22,9 @@ interface StandingsProps {
 const highlightedTeam = "Alaves";
 
 const Standings: React.FC<StandingsProps> = (props) => {
-  const { rows, nextRows } = props;
+  const { frame, rows, nextRows } = props;
+  const percent = (frame % framesForEachDate) / framesForEachDate;
+  const delayedPercent = Math.min(percent * 3, 1);
 
   const [orderBy, setOrderBy] = useState("index");
   const [orderDirection, setOrder] = useState<"asc" | "desc">("asc");
@@ -173,6 +175,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   component="th"
                   scope="row"
                   currentValue={row.index}
@@ -181,12 +184,14 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   currentValue={row.name}
                   nextValue={nextRow?.name}
                 />
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={row.win + row.draw + row.loss}
                   nextValue={
@@ -196,6 +201,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={row.win}
                   nextValue={nextRow?.win}
@@ -203,6 +209,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={row.draw}
                   nextValue={nextRow?.draw}
@@ -210,6 +217,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={row.loss}
                   nextValue={nextRow?.loss}
@@ -217,6 +225,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={`${row.scored}:${row.received}`}
                   nextValue={nextRow && `${nextRow.scored}:${nextRow.received}`}
@@ -224,6 +233,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
+                  delayedPercent={delayedPercent}
                   align="right"
                   currentValue={row.points}
                   nextValue={nextRow?.points}
@@ -240,14 +250,19 @@ const Standings: React.FC<StandingsProps> = (props) => {
 function AnimatingTableCell(
   props: TableCellProps & {
     diff?: number;
+    delayedPercent: number;
     highlight: boolean;
     currentValue: ReactNode;
     nextValue?: ReactNode;
   }
 ) {
-  const { diff, highlight, currentValue, nextValue } = props;
-  const percent = (useCurrentFrame() % framesForEachDate) / framesForEachDate;
-  const delayedPercent = Math.min(percent * 3, 1);
+  const {
+    diff = 0,
+    delayedPercent,
+    highlight,
+    currentValue,
+    nextValue,
+  } = props;
   const transitionFinished = delayedPercent === 1;
 
   const transform = `translateY(${diff * delayedPercent * 100}%)`;
