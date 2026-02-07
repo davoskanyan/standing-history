@@ -12,7 +12,7 @@ import {
   goalDifferenceComparator,
   stableSort,
 } from "./util";
-import { IconButton, MenuItem, Select, Typography } from "@mui/material";
+import { Box, IconButton, MenuItem, Paper, Select } from "@mui/material";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 
 const games = dataset.map((gameData) => {
@@ -50,38 +50,45 @@ function App() {
   }, [date]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      <div
-        style={{
-          display: "flex",
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <Paper
+        elevation={0}
+        sx={{
+          display: "inline-flex",
           alignItems: "center",
-          gap: 8,
-          flexWrap: "wrap",
+          gap: 0.5,
+          px: 1,
+          py: 0.5,
+          borderRadius: 2,
+          bgcolor: "background.paper",
+          border: "1px solid",
+          borderColor: "divider",
         }}
       >
         <DateSelect value={date} onChange={setDate} options={dates} />
-      </div>
-      <div
-        style={{
+      </Paper>
+      <Box
+        sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: 24,
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "minmax(660px, 720px) minmax(320px, 1fr)",
+          },
+          gap: 3,
           alignItems: "start",
         }}
       >
-        <Standings frame={framesForEachDate} rows={rows} />
-        <div>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-            Results
-          </Typography>
+        <Box sx={{ minWidth: 0 }}>
+          <Standings frame={framesForEachDate} rows={rows} />
+        </Box>
+        <Box sx={{ minWidth: 0 }}>
           <Results
             matchweekGames={resultsHistory.getAllResults()}
             selectedDate={date}
-            dates={dates}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
@@ -106,17 +113,20 @@ function DateSelect({ value, onChange, options }) {
       <IconButton
         disabled={isFirstDate}
         color="primary"
-        aria-label="upload picture"
-        component="span"
+        aria-label="Previous matchweek"
+        size="small"
         onClick={leftArrowHandler}
       >
         <ArrowLeft />
       </IconButton>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        variant="standard"
+        disableUnderline
+        sx={{
+          ".MuiSelect-select": { py: 1, fontWeight: 600 },
+        }}
       >
         {options.map((option, index) => (
           <MenuItem value={option} key={option}>
@@ -126,8 +136,8 @@ function DateSelect({ value, onChange, options }) {
       </Select>
       <IconButton
         color="primary"
-        aria-label="upload picture"
-        component="span"
+        aria-label="Next matchweek"
+        size="small"
         disabled={isLastDate}
         onClick={rightArrowHandler}
       >

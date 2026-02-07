@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  useTheme,
 } from "@mui/material";
 import React, { CSSProperties, ReactNode, useMemo, useState } from "react";
 import { StandingRow } from "./data/models";
@@ -21,6 +22,7 @@ interface StandingsProps {
 
 const Standings: React.FC<StandingsProps> = (props) => {
   const { frame, rows, nextRows } = props;
+  const theme = useTheme();
   const percent = (frame % framesForEachDate) / framesForEachDate;
   const delayedPercent = Math.min(percent * 3, 1);
 
@@ -52,17 +54,41 @@ const Standings: React.FC<StandingsProps> = (props) => {
       : {};
   }, [nextRowsSorted]);
 
-  const tableContainerStyle = {
-    width: "100%",
-    maxWidth: 720,
-    backgroundColor: "#141414",
-  };
-
   return (
-    <TableContainer style={tableContainerStyle}>
-      <Table size="small">
+    <TableContainer
+      sx={{
+        width: "100%",
+        minWidth: 660,
+        maxWidth: 720,
+        maxHeight: { xs: "70vh", md: "none" },
+        overflow: "auto",
+        bgcolor: "background.paper",
+        borderRadius: 2,
+        border: "1px solid",
+        borderColor: "divider",
+      }}
+    >
+      <Table
+        size="small"
+        sx={{
+          "& td:nth-of-type(2), & th:nth-of-type(2)": { whiteSpace: "nowrap" },
+        }}
+      >
         <TableHead>
-          <TableRow sx={{ "& th": { backgroundColor: "#1a1a1a" } }}>
+          <TableRow
+            sx={{
+              "& th": {
+                bgcolor: "rgba(255,255,255,0.04)",
+                fontWeight: 600,
+                fontSize: "0.75rem",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "text.secondary",
+                py: 1.5,
+                borderBottom: `1px solid ${theme.palette.divider}`,
+              },
+            }}
+          >
             <TableCell
               sortDirection={orderBy === "index" ? orderDirection : false}
             >
@@ -167,7 +193,15 @@ const Standings: React.FC<StandingsProps> = (props) => {
             const highlight = false;
 
             return (
-              <TableRow key={row.name} title="Highlight">
+              <TableRow
+                key={row.name}
+                sx={{
+                  "&:hover": { bgcolor: "rgba(255,255,255,0.03)" },
+                  "& td": {
+                    borderBottom: `1px solid ${theme.palette.divider}`,
+                  },
+                }}
+              >
                 <AnimatingTableCell
                   highlight={highlight}
                   diff={diff}
@@ -183,6 +217,7 @@ const Standings: React.FC<StandingsProps> = (props) => {
                   delayedPercent={delayedPercent}
                   currentValue={row.name}
                   nextValue={nextRow?.name}
+                  style={{ whiteSpace: "nowrap" }}
                 />
                 <AnimatingTableCell
                   highlight={highlight}
@@ -250,6 +285,7 @@ function AnimatingTableCell(
     highlight: boolean;
     currentValue: ReactNode;
     nextValue?: ReactNode;
+    style?: CSSProperties;
   }
 ) {
   const {
@@ -258,6 +294,7 @@ function AnimatingTableCell(
     highlight,
     currentValue,
     nextValue,
+    style,
   } = props;
   const transitionFinished = delayedPercent === 1;
 
@@ -266,11 +303,13 @@ function AnimatingTableCell(
     transitionFinished && nextValue !== undefined ? nextValue : currentValue;
 
   const cellStyle: CSSProperties = {
-    backgroundColor: highlight ? "#252525" : "#141414",
+    backgroundColor: highlight ? "rgba(255,255,255,0.06)" : "transparent",
     transform,
-    paddingBlock: "4px",
+    paddingBlock: 10,
     position: "relative",
     zIndex: highlight ? 1 : 0,
+    fontSize: "0.9rem",
+    ...style,
   };
 
   return (
