@@ -8,7 +8,7 @@ import {
   TableRow,
   TableSortLabel
 } from '@mui/material';
-import React, {ReactNode, useMemo, useState} from 'react';
+import React, {CSSProperties, ReactNode, useMemo, useState} from 'react';
 import {StandingRow} from "./data/models";
 import {getComparator, stableSort} from './util';
 import {useCurrentFrame} from "remotion";
@@ -223,7 +223,7 @@ function AnimatingTableCell(props: TableCellProps & {
   const transform = `translateY(${diff * delayedPercent * 100}%)`
   const value = transitionFinished && nextValue !== undefined ? nextValue : currentValue;
 
-  const highlightedStyle = {
+  const highlightedStyle: CSSProperties = {
     background: '#90caf940',
     color: 'white',
     zIndex: 1,
