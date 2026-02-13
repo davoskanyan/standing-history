@@ -1,0 +1,1 @@
+export { StandingTable } from "./StandingTable";
