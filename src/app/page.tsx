@@ -1,5 +1,3 @@
-import { StandingTable } from "@/entities/standing-table";
-
 export default function Home() {
-  return <StandingTable />;
+  return <h1>Hello World</h1>;
 }
