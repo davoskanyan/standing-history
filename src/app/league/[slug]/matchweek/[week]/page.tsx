@@ -1,22 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getDataset, getAllDatasets } from "@/entities/dataset/registry";
+import { getDataset } from "@/entities/dataset/registry";
 import { StandingTable } from "@/entities/standing-table";
 import { computeStandings } from "@/shared/lib/standings";
 import { MatchweekPickerRouted } from "./MatchweekPickerRouted";
 
-export const dynamicParams = false;
-
-export async function generateStaticParams() {
-  const datasets = getAllDatasets();
-  return datasets.flatMap((d) =>
-    d.matchweekDates.map((_, i) => ({
-      slug: d.slug,
-      week: String(i + 1),
-    }))
-  );
-}
+export const dynamicParams = true;
+export const revalidate = false;
 
 export async function generateMetadata({
   params,
