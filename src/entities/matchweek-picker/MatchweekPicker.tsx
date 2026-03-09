@@ -1,9 +1,6 @@
-"use client";
-
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -14,7 +11,7 @@ import {
 export interface MatchweekPickerProps {
   weeks: number[];
   value: number | null;
-  onValueChange: (week: number | null) => void;
+  onValueChange?: (week: number | null) => void;
   placeholder?: string;
   disabled?: boolean;
 }
@@ -38,17 +35,17 @@ export function MatchweekPicker({
 
   const goPrev = () => {
     if (value === null) {
-      onValueChange(maxWeek);
+      onValueChange?.(maxWeek);
     } else if (value > minWeek) {
-      onValueChange(value - 1);
+      onValueChange?.(value - 1);
     }
   };
 
   const goNext = () => {
     if (value === null) {
-      onValueChange(minWeek);
+      onValueChange?.(minWeek);
     } else if (value < maxWeek) {
-      onValueChange(value + 1);
+      onValueChange?.(value + 1);
     }
   };
 
@@ -66,7 +63,9 @@ export function MatchweekPicker({
       </Button>
       <Select
         value={stringValue}
-        onValueChange={(v) => onValueChange(v === "" ? null : parseInt(v, 10))}
+        onValueChange={(v) =>
+          onValueChange?.(v === "" ? null : parseInt(v, 10))
+        }
         disabled={disabled}
       >
         <SelectTrigger className="w-[180px]">

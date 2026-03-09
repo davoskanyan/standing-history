@@ -12,6 +12,14 @@ const eslintConfig = defineConfig([
   globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
   ...storybook.configs["flat/recommended"],
   eslintConfigPrettier,
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { ignoreRestSiblings: true },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

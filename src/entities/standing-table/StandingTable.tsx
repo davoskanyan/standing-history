@@ -23,35 +23,35 @@ export function StandingTable({ caption, rows }: StandingTableProps) {
         </TableCaption>
       )}
       <TableHeader>
-        <TableRow className="border-b-2 hover:bg-transparent">
-          <TableHead className="w-12 sm:w-16 text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
-            Pos
+        <TableRow className="border-b border-border/60 hover:bg-transparent">
+          <TableHead className="w-12 sm:w-14 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            #
           </TableHead>
-          <TableHead className="font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground min-w-[140px] sm:min-w-0">
+          <TableHead className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[140px] sm:min-w-0">
             Team
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             P
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             W
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             D
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             L
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground hidden md:table-cell">
-            G
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground hidden md:table-cell">
+            GF:GA
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             GD
           </TableHead>
-          <TableHead className="text-center font-semibold text-xs sm:text-sm uppercase tracking-wider text-muted-foreground hidden sm:table-cell">
+          <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground hidden sm:table-cell">
             Form
           </TableHead>
-          <TableHead className="text-center font-bold text-xs sm:text-sm uppercase tracking-wider">
+          <TableHead className="text-center text-xs font-bold uppercase tracking-wider text-primary">
             Pts
           </TableHead>
         </TableRow>
@@ -60,46 +60,56 @@ export function StandingTable({ caption, rows }: StandingTableProps) {
         {rows.map((team) => (
           <TableRow
             key={team.position}
-            className="hover:bg-muted/50 transition-colors border-b"
+            className="border-b border-border/40 transition-colors hover:bg-muted/30"
           >
-            <TableCell className="text-center">
-              <span className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md font-semibold text-xs sm:text-sm bg-muted text-muted-foreground">
+            <TableCell className="text-center py-3">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-md text-xs font-bold bg-muted/60 text-muted-foreground">
                 {team.position}
               </span>
             </TableCell>
-            <TableCell className="font-semibold text-sm sm:text-base py-3 sm:py-4">
+            <TableCell className="font-semibold text-sm sm:text-base py-3 sm:py-3.5 text-foreground">
               {team.team}
             </TableCell>
             <TableCell className="text-center font-medium text-muted-foreground text-sm">
               {team.played}
             </TableCell>
-            <TableCell className="text-center font-medium text-sm">
+            <TableCell className="text-center font-semibold text-sm text-foreground">
               {team.won}
             </TableCell>
-            <TableCell className="text-center font-medium text-sm">
+            <TableCell className="text-center font-medium text-sm text-muted-foreground">
               {team.drawn}
             </TableCell>
-            <TableCell className="text-center font-medium text-sm">
+            <TableCell className="text-center font-medium text-sm text-muted-foreground">
               {team.lost}
             </TableCell>
-            <TableCell className="text-center font-medium text-sm hidden md:table-cell">
+            <TableCell className="text-center font-medium text-sm text-muted-foreground hidden md:table-cell">
               {team.goalsFor}:{team.goalsAgainst}
             </TableCell>
             <TableCell className="text-center font-semibold text-sm">
-              {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}
-              {team.goalsFor - team.goalsAgainst}
+              <span
+                className={
+                  team.goalsFor - team.goalsAgainst > 0
+                    ? "text-primary"
+                    : team.goalsFor - team.goalsAgainst < 0
+                      ? "text-destructive"
+                      : "text-muted-foreground"
+                }
+              >
+                {team.goalsFor - team.goalsAgainst > 0 ? "+" : ""}
+                {team.goalsFor - team.goalsAgainst}
+              </span>
             </TableCell>
-            <TableCell className="text-center hidden sm:table-cell">
-              <div className="flex gap-1 sm:gap-1.5 justify-center">
+            <TableCell className="text-center hidden sm:table-cell py-3">
+              <div className="flex gap-1 justify-center">
                 {team.form.map((result, index) => (
                   <span
                     key={index}
-                    className={`w-5 h-5 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold shadow-sm transition-transform hover:scale-110 ${
+                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold ${
                       result === "W"
-                        ? "bg-green-500 text-white dark:bg-green-600"
+                        ? "bg-primary/20 text-primary ring-1 ring-primary/30"
                         : result === "D"
-                          ? "bg-slate-400 text-white dark:bg-slate-500"
-                          : "bg-red-500 text-white dark:bg-red-600"
+                          ? "bg-muted text-muted-foreground"
+                          : "bg-destructive/20 text-destructive ring-1 ring-destructive/30"
                     }`}
                   >
                     {result}
@@ -107,8 +117,8 @@ export function StandingTable({ caption, rows }: StandingTableProps) {
                 ))}
               </div>
             </TableCell>
-            <TableCell className="text-center">
-              <span className="inline-flex items-center justify-center min-w-[2.5rem] sm:min-w-[3rem] px-2 sm:px-3 py-1 sm:py-1.5 rounded-md bg-primary/10 text-primary font-bold text-sm sm:text-base">
+            <TableCell className="text-center py-3">
+              <span className="inline-flex items-center justify-center min-w-[2.25rem] sm:min-w-[2.75rem] rounded-lg bg-primary/15 px-2 py-1 text-sm font-bold text-primary sm:text-base">
                 {team.points}
               </span>
             </TableCell>
