@@ -40,6 +40,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Standing History" }],
   creator: "Standing History",
+  icons: { icon: "/logo.svg" },
   openGraph: {
     type: "website",
     locale: "en_US",

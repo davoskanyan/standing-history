@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="1200" height="1200" fill="none">
+  <!-- Icon mark (same as favicon, scaled to fill viewBox) -->
+  <rect width="120" height="120" rx="24" fill="#0c0c0e"/>
+  <path fill="#fff" d="M30 42h60v7.5H30V42zm0 18.75h52.5v7.5H30v-7.5zm0 18.75h45v7.5H30v-7.5z"/>
+</svg>

@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getDataset } from "@/entities/dataset/registry";
+import { MatchweekFixtures } from "@/entities/matchweek-fixtures";
 import { StandingTable } from "@/entities/standing-table";
-import { computeStandings } from "@/shared/lib/standings";
+import {
+  computeStandings,
+  getMatchesForMatchweek,
+} from "@/shared/lib/standings";
 import { MatchweekPickerRouted } from "./MatchweekPickerRouted";
 
 export const dynamicParams = true;
@@ -23,7 +27,7 @@ export async function generateMetadata({
   if (Number.isNaN(week) || week < 1 || week > maxWeek) return {};
 
   const title = `${dataset.label} – Matchweek ${week}`;
-  const description = `${dataset.label} league table after Matchweek ${week} of ${maxWeek}. Full standings with points, wins, draws, losses, goal difference, and recent form.`;
+  const description = `${dataset.label} league table and matchweek results after Matchweek ${week} of ${maxWeek}. Full standings with points, wins, draws, losses, goal difference, and recent form.`;
 
   return {
     title,
@@ -70,6 +74,7 @@ export default async function LeagueMatchweekPage({
   }
 
   const rows = computeStandings(matches, matchweekDates, week);
+  const fixtureMatches = getMatchesForMatchweek(matches, matchweekDates, week);
   const basePath = `/league/${slug}`;
 
   return (
@@ -94,6 +99,15 @@ export default async function LeagueMatchweekPage({
         <StandingTable
           caption={`Standings after Matchweek ${week} of ${maxWeek}`}
           rows={rows}
+        />
+      </div>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
+          Matchweek {week} results
+        </p>
+        <MatchweekFixtures
+          matches={fixtureMatches}
+          caption={`Fixtures and results for Matchweek ${week}`}
         />
       </div>
     </main>

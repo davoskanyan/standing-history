@@ -47,7 +47,7 @@ export default function OgImage() {
         }}
       />
 
-      {/* Logo */}
+      {/* Logo (matches public/logo.svg) */}
       <div
         style={{
           display: "flex",
@@ -58,20 +58,28 @@ export default function OgImage() {
       >
         <div
           style={{
-            background: "#16a34a",
+            background: "#0c0c0e",
             borderRadius: "14px",
             width: "60px",
             height: "60px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "26px",
-            fontWeight: "900",
-            color: "white",
-            letterSpacing: "-1px",
+            overflow: "hidden",
           }}
         >
-          SH
+          <svg
+            width="36"
+            height="36"
+            viewBox="0 0 120 120"
+            fill="none"
+            style={{ flexShrink: 0 }}
+          >
+            <path
+              fill="#fff"
+              d="M30 42h60v7.5H30V42zm0 18.75h52.5v7.5H30v-7.5zm0 18.75h45v7.5H30v-7.5z"
+            />
+          </svg>
         </div>
         <span
           style={{

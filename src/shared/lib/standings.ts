@@ -28,6 +28,42 @@ export function getMatchweek(
   return matchweekDates.length;
 }
 
+/** Returns matches that belong to the given matchweek, sorted by date. */
+export function getMatchesForMatchweek(
+  matches: MatchRow[],
+  matchweekDates: string[],
+  week: number
+): MatchRow[] {
+  const filtered = matches.filter(
+    (m) => getMatchweek(m.Date, matchweekDates) === week
+  );
+  return [...filtered].sort(
+    (a, b) => parseDateKey(a.Date) - parseDateKey(b.Date)
+  );
+}
+
+const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+/** Formats "DD/MM/YY" to a short display string e.g. "14 Dec 24". */
+export function formatMatchDate(dateStr: string): string {
+  const [day, month, year] = dateStr.split("/").map(Number);
+  const monthName = MONTH_NAMES[month - 1] ?? String(month);
+  return `${day} ${monthName} ${year}`;
+}
+
 export function deriveMatchweekDates(matches: MatchRow[]): string[] {
   const byDate = [...matches].sort(
     (a, b) => parseDateKey(a.Date) - parseDateKey(b.Date)

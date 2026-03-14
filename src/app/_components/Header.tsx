@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -14,9 +15,14 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
       <div className="container mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="group flex items-center gap-2.5 no-underline">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground text-base font-bold shadow-sm shadow-primary/30">
-            SH
-          </span>
+          <Image
+            src="/logo.svg"
+            alt=""
+            width={28}
+            height={28}
+            className="h-7 w-7 rounded-lg shadow-sm"
+            unoptimized
+          />
           <span className="text-base font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
             Standing<span className="text-primary">History</span>
           </span>
