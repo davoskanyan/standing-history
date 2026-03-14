@@ -8,6 +8,8 @@ import {
   computeStandings,
   getMatchesForMatchweek,
 } from "@/shared/lib/standings";
+import { MatchweekAutoplay } from "./MatchweekAutoplay";
+import { MatchweekKeyboardNav } from "./MatchweekKeyboardNav";
 import { MatchweekPickerRouted } from "./MatchweekPickerRouted";
 
 export const dynamicParams = true;
@@ -79,6 +81,12 @@ export default async function LeagueMatchweekPage({
 
   return (
     <main className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
+      <MatchweekKeyboardNav
+        basePath={basePath}
+        week={week}
+        minWeek={minWeek}
+        maxWeek={maxWeek}
+      />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
@@ -88,12 +96,20 @@ export default async function LeagueMatchweekPage({
             {label}
           </h1>
         </div>
-        <MatchweekPickerRouted
-          basePath={basePath}
-          weeks={weeks}
-          value={week}
-          placeholder="Select matchweek"
-        />
+        <div className="flex items-center gap-1">
+          <MatchweekAutoplay
+            basePath={basePath}
+            week={week}
+            minWeek={minWeek}
+            maxWeek={maxWeek}
+          />
+          <MatchweekPickerRouted
+            basePath={basePath}
+            weeks={weeks}
+            value={week}
+            placeholder="Select matchweek"
+          />
+        </div>
       </div>
       <div className="rounded-xl border border-border/60 bg-card overflow-hidden shadow-sm">
         <StandingTable

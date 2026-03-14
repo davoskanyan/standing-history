@@ -49,12 +49,28 @@ export function MatchweekPicker({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft" && canGoPrev) {
+      e.preventDefault();
+      goPrev();
+    } else if (e.key === "ArrowRight" && canGoNext) {
+      e.preventDefault();
+      goNext();
+    }
+  };
+
   return (
-    <div className="flex items-center gap-1">
+    <div
+      className="flex items-center gap-1"
+      role="group"
+      aria-label="Matchweek"
+      onKeyDownCapture={handleKeyDown}
+    >
       <Button
         type="button"
         variant="outline"
         size="icon-sm"
+        className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
         disabled={!canGoPrev}
         onClick={goPrev}
         aria-label="Previous matchweek"
@@ -83,6 +99,7 @@ export function MatchweekPicker({
         type="button"
         variant="outline"
         size="icon-sm"
+        className="hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground"
         disabled={!canGoNext}
         onClick={goNext}
         aria-label="Next matchweek"
